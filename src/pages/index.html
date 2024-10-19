@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self'; object-src 'none';">
+
+  <title>AirAlert</title>
+
+  <link rel="stylesheet" href="../css/icons.css">
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/index.css">
+</head>
+<body>
+  <nav class="nav h-container">
+    <label class="checkbox-container">
+      <input type="checkbox" checked>
+      <span class="material-symbols-rounded checkmark">check</span>
+      <span class="label-text">Сповіщення</span>
+    </label>
+    <div class="system-buttons h-container">
+      <button class="system-button" id="minimize">
+        <span class="material-symbols-rounded">
+          horizontal_rule
+        </span>
+      </button>
+      <button class="system-button" id="maximize">
+        <span class="material-symbols-rounded">
+          filter_none
+        </span>
+      </button>
+      <button class="system-button" id="close">
+        <span class="material-symbols-rounded">
+          close
+        </span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="h-container main">
+    <div class="left container">
+      <h1 id="statusText">Завантаження..</h1>
+      <img src="../assets/img/map.png" alt="alerts map" class="map" id="alertsMap">
+    </div>
+    <div class="right container">
+      <button class="main-button" id="openMap">
+        <span class="material-symbols-rounded">
+          map
+        </span>
+        Відкрити детальну мапу
+      </button>
+      <button class="main-button" id="testNotify">
+        <span class="material-symbols-rounded">
+          chat_bubble
+        </span>
+        Тест сповіщення
+      </button>
+      <div class="h-container space-between">
+        <label class="checkbox-container">
+          <input type="checkbox" checked name="notifyAlert" id="notifyAlert">
+          <span class="material-symbols-rounded checkmark">check</span>
+          <span class="label-text">Тривога</span>
+        </label>
+
+        <label class="checkbox-container">
+          <input type="checkbox" checked name="notifyAllClear" id="notifyAllClear">
+          <span class="material-symbols-rounded checkmark">check</span>
+          <span class="label-text">Відбій</span>
+        </label>
+      </div>
+      <div class="h-container space-between">
+        <label class="checkbox-container">
+          <input type="checkbox" checked name="notifySound" id="notifySound">
+          <span class="material-symbols-rounded checkmark">check</span>
+          <span class="label-text">З звуком</span>
+        </label>
+
+        <button class="icon-button" id="settingsButton">
+          <span class="material-symbols-rounded">
+            settings
+          </span>
+        </button>
+      </div>
+
+      <label for="regionSelect" class="bold">Область</label>
+      <select name="regionSelect" id="regionSelect" class="main-select">
+        <option value="" disabled selected>Виберіть область</option>
+      </select>
+      <label for="onClickSelect" class="bold">При натисканні на сповіщення</label>
+      <select name="onClickSelect" id="onClickSelect" class="main-select">
+        <option value="none" selected>Нічого</option>
+        <option value="openProgram">Відкрити програму</option>
+        <option value="openMap">Відкрити мапу</option>
+        <option value="openDetailMap">Відкрити детальну мапу</option>
+        <option value="openOfficialMap">Відкрити офіціальну мапу</option>
+      </select>
+    </div>
+  </div>
+
+  <script src="../scripts/apiHandler.js"></script>
+  <script src="../scripts/index.js"></script>
+  <script src="../scripts/system.js"></script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+.h-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    width: 100%;
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+}
+
+.h-container.space-between {
+    justify-content: space-between;
+}
+
+.main {
+    width: 100%;
+    height: 100%;
+
+    margin-top: 60px;
+
+    height: calc(100vh - 60px);
+}
+
+.left, .right {
+    height: 100%;
+
+    align-items: flex-start;
+    justify-content: flex-start;
+
+    padding: 15px;
+    gap: 10px;
+}
+
+.left {
+    overflow: hidden;
+}
+
+.right {
+    max-width: 500px;
+}
+
+nav.nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 60px;
+    background-color: var(--background-color);
+    z-index: 1000;
+
+    justify-content: space-between;
+
+    padding-left: 15px;
+}
+
+nav.nav .system-buttons {
+    gap: 0;
+
+    width: auto !important;
+    height: 100%;
+}
