@@ -18,7 +18,11 @@ contextBridge.exposeInMainWorld('api', {
     getRegions: () => ipcRenderer.invoke('getRegions'),
 });
 
-// Добавляем методы для работы с треем
 contextBridge.exposeInMainWorld('tray', {
     updateTray: (status) => ipcRenderer.send('update-tray', status)
+});
+
+contextBridge.exposeInMainWorld('settings', {
+    saveSettings: (settings) => ipcRenderer.send('save-settings', settings),
+    loadSettings: () => ipcRenderer.invoke('load-settings')
 });

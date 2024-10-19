@@ -11,10 +11,14 @@ regionSelect.addEventListener('change', async () => {
     await updateApi(regionSelect, statusText, imgElement, false);
 });
 
-updateRegionSelect(regionSelect);
+loadedNow = true;
 
-setInterval(() => {
-    updateApi(regionSelect, statusText, imgElement);
+setInterval(async () => {
+    await updateApi(regionSelect, statusText, imgElement);
 }, 15000);
 
-updateApi();
+window.onload = async () => {
+    await updateRegionSelect(regionSelect);
+    await loadSettings();
+    await updateApi(regionSelect, statusText, imgElement, false);
+};

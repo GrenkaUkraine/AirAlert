@@ -60,3 +60,11 @@ app.on('activate', () => {
     mainWindow.show();
   }
 });
+
+app.on('will-quit', () => {
+  db.close((err) => {
+      if (err) {
+          console.error('Error closing the database:', err.message);
+      }
+  });
+});

@@ -1,7 +1,12 @@
 const imageUrl = 'https://alerts.com.ua/map.png';
 const loadingAlertsMapImageSrc = '../assets/img/map.png';
 
+const alertSound = new Audio('../assets/audio/alert.mp3');
+const allClearSound = new Audio('../assets/audio/allClear.mp3');
+const loadingSound = new Audio('../assets/audio/loading.mp3');
+
 let lastStatus = 0;
+let loadedNow = false;
 
 async function updateImage(imgElement) {
     try {
@@ -22,13 +27,13 @@ async function updateImage(imgElement) {
 function updateTray(status) {
     switch (status) {
         case 0:
-            window.tray.updateTray(0); // Обновляем трей на загрузку
+            window.tray.updateTray(0);
             break;
         case 1:
-            window.tray.updateTray(1); // Обновляем трей на отсутствие тревоги
+            window.tray.updateTray(1);
             break;
         case 2:
-            window.tray.updateTray(2); // Обновляем трей на тревогу
+            window.tray.updateTray(2);
             break;
     }
 }
@@ -39,26 +44,39 @@ async function updateStatus(regionSelect, statusText, cachedNotifications=true) 
     }
 
     const regionId = regionSelect.value;
-    const selectedOption = regionSelect.selectedOptions[0];
-    const selectedText = selectedOption.textContent;
+    const selectedOption = regionSelect.options[regionSelect.selectedIndex];
+    const selectedText = selectedOption.text;
+    console.log(`${regionSelect.selectedIndex} | ${selectedOption} | ${selectedText}`);
 
     try {
         const alertStatus = await window.api.checkAlertStatus(regionId);
         
         if (alertStatus) {
             statusText.textContent = 'Повітряна тривога!';
-            updateTray(2); // Вызов функции для обновления трея
+
+            statusText.classList.add('accent-red-color');
+            statusText.classList.remove('accent-green-color');
+
+            updateTray(2);
             await sendNotification(2, {region: selectedText}, cachedNotifications);
         } else {
             statusText.textContent = 'Тривоги немає';
-            updateTray(1); // Вызов функции для обновления трея
+
+            statusText.classList.add('accent-green-color');
+            statusText.classList.remove('accent-red-color');
+
+            updateTray(1);
             await sendNotification(1, {region: selectedText}, cachedNotifications);
         }
     } catch (error) {
         console.error('Error fetching alert status:', error);
 
         statusText.textContent = 'Завантаження..';
-        updateTray(0); // Вызов функции для обновления трея
+
+        statusText.classList.remove('accent-green-color');
+        statusText.classList.remove('accent-red-color');
+        
+        updateTray(0);
         await sendNotification(0, {}, cachedNotifications);
     }
 }
@@ -71,29 +89,32 @@ async function sendOnlyNotification(type=-1, params={}) {
     switch (type) {
         case 0:
             window.notification.sendConnectionLostNotification();
+            loadingSound.play();
             break;
         case 1:
             window.notification.sendAllClearNotification(params.region);
+            allClearSound.play();
             break;
         case 2:
             window.notification.sendAlertNotification(params.region);
+            alertSound.play();
             break;
     }
 }
 
-async function sendNotification(type, params={}, cache=True) {
-    if (cache) {
+async function sendNotification(type, params={}, cache=true) {    
+    if (cache && !loadedNow) {
         if (type == lastStatus) {
             return;
         }
     } else {
         lastStatus = type;
+        loadedNow = false;
+        
         return;
     }
 
-    await sendOnlyNotification(type);
-
-    lastStatus = type;
+    await sendOnlyNotification(type, params);
 }
 
 async function updateRegionSelect(regionSelect) {

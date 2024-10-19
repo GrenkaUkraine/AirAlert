@@ -4,3 +4,10 @@
     --accent-red-color: #DD5522;
     --accent-green-color: #77AA55;
 }
+
+.accent-red-color {
+    color: var(--accent-red-color) !important;
+}
+.accent-green-color {
+    color: var(--accent-green-color) !important;
+}
